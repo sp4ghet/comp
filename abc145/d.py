@@ -1,39 +1,24 @@
 from math import factorial
 pos = map(int, input().split())
-
+p = 10**9 + 7
 x, y = sorted(pos)
 
-num_twos = x // 2
-rem = x % 2
+if (x+y) % 3 != 0:
+    print(0)
+    exit()
 
-solution = 0
-
-max_n = 10**6
-
-result = max_n*[None]
-inverse = max_n*[None]
-result[0] = 1
-inverse[0] = 1
-
-m = 10**9 + 7
-for i in range(1, max_n):
-    result[i] = (i*result[i-1]) % m
-    inverse[i] = result[i]**(m-2) % m
+n = (-x + 2 * y) // 3
+m = (-y + 2 * x) // 3
 
 
-def ncr(n, r):
-    print(result[n], inverse[r])
-    return (result[n] * inverse[r] * inverse[n-r]) % m
+def ncr(n, r, p):
+    num = den = 1
+    for i in range(r):
+        num = (num * (n - i)) % p  # n!/k!
+        den = (den * (i + 1)) % p  # (n-k)!
+    return (num * pow(den,
+                      p - 2, p)) % p
 
 
-while not (y == num_twos + (rem*2)):
-    num_twos -= 1
-    rem += 2
-
-    if y < (num_twos + rem*2):
-        print(0)
-        exit()
-
-solution = ncr(num_twos + rem, rem)
-
-print(int(solution))
+ans = ncr(n+m, n, p)
+print(ans)
