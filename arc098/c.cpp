@@ -26,6 +26,29 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
+    int n;
+    string s;
+    cin >> n >> s;
+    vector<int> westCum(n + 1);
+    rep(i, n)
+    {
+        int add = s.at(i) == 'W' ? 1 : 0;
+        westCum[i + 1] = add + westCum[i];
+    }
 
+    // view(westCum);
+    vector<int> flips(n);
+    rep(i, n)
+    {
+        int d = n - i - 1;
+        int easts = d - (westCum[n] - westCum[i + 1]);
+        flips[i] = westCum[i] + easts;
+    }
+    int ans = INT32_MAX;
+    rep(i, n)
+    {
+        ans = min(ans, flips[i]);
+    }
+    cout << ans << endl;
     return 0;
 }

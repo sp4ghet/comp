@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 #include <boost/math/common_factor.hpp>
 using namespace std;
-typedef unsigned long long ll;
+using ll = unsigned long long;
+using P = pair<int, int>;
 #define rep(i, n) for (int i = 0; i < n; ++i)
 #pragma region Debug
 template <typename T>
@@ -87,71 +88,93 @@ struct mint
     }
 };
 
-// Returns LCM of arr[0..n-1]
-unsigned long long int LCM(int arr[], int n)
+struct sieve
 {
-    // Find the maximum value in arr[]
-    int max_num = 0;
-    for (int i = 0; i < n; i++)
-        if (max_num < arr[i])
-            max_num = arr[i];
+    int n;
+    vector<int> f, primes;
 
-    // Initialize result
-    unsigned long long int res = 1;
-
-    // Find all factors that are present in
-    // two or more array elements.
-    int x = 2; // Current factor.
-    while (x <= max_num)
+    sieve(int n = 1) : n(n), f(n + 1)
     {
-        // To store indexes of all array
-        // elements that are divisible by x.
-        vector<int> indexes;
-        for (int j = 0; j < n; j++)
-            if (arr[j] % x == 0)
-                indexes.push_back(j);
-
-        // If there are 2 or more array elements
-        // that are divisible by x.
-        if (indexes.size() >= 2)
+        for (int i = 2; i <= n; i++)
         {
-            // Reduce all array elements divisible
-            // by x.
-            for (int j = 0; j < indexes.size(); j++)
-                arr[indexes[j]] = arr[indexes[j]] / x;
-
-            res = res * x;
+            if (f[i])
+                continue;
+            primes.push_back(i);
+            f[i] = i;
+            for (ll j = i * i; j <= n; j += i)
+            {
+                if (!f[j])
+                    f[j] = i;
+            }
         }
-        else
-            x++;
     }
 
-    // Then multiply all reduced array elements
-    for (int i = 0; i < n; i++)
-        res = res * arr[i];
+    bool isPrime(int x)
+    {
+        return f[x] == x;
+    }
 
-    return res;
-}
+    vector<int> factorList(int x)
+    {
+        vector<int> res;
+        while (x != 1)
+        {
+            res.push_back(f[x]);
+            x /= f[x];
+        }
+        return res;
+    }
+    vector<pair<int, int>> factor(int x)
+    {
+        auto fl = factorList(x);
+        if (fl.size() == 0)
+        {
+            return {};
+        }
+        vector<P> res(1, P(fl[0], 0));
+        for (int p : fl)
+        {
+            if (res.back().first == p)
+            {
+                res.back().second++;
+            }
+            else
+            {
+                res.emplace_back(p, 1);
+            }
+        }
+        return res;
+    }
+};
 
 int main()
 {
+    sieve s(1e6);
     int n;
     cin >> n;
     vector<ll> a(n);
     rep(i, n) cin >> a[i];
 
-    ll sm = min();
-
-    ll mult = a[0];
+    map<int, int> mp;
     rep(i, n)
     {
-        mult = boost::math::lcm(mult, a[i]);
+        auto f = s.factor(a[i]);
+        for (P p : f)
+        {
+            mp[p.first] = max(p.second, mp[p.first]);
+        }
+    }
+
+    mint lcm = 1;
+    for (auto p : mp)
+    {
+        rep(i, p.second) lcm *= p.first;
     }
 
     mint ans = 0;
     rep(i, n)
     {
-        ans += mult / a[i];
+        ans += lcm / a[i];
     }
 
     cout << ans.x << endl;
