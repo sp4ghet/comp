@@ -26,15 +26,11 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    bitset<100> a;
-    ll foo = 1;
-    a = foo;
-    a |= a << 80;
-    rep(i, 81)
-    {
-        cout << a.test(i);
-    }
-    cout << endl;
+    int n, d, a;
+    cin >> n >> d >> a;
+    vector<P> mons(n, P(0, 0));
+    rep(i, n) cin >> mons[i].first >> mons[i].second;
 
+    
     return 0;
 }

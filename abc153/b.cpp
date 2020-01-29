@@ -26,15 +26,23 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    bitset<100> a;
-    ll foo = 1;
-    a = foo;
-    a |= a << 80;
-    rep(i, 81)
+    int h, n;
+    cin >> h >> n;
+    int a = 0;
+    rep(i, n)
     {
-        cout << a.test(i);
+        int b;
+        cin >> b;
+        a += b;
     }
-    cout << endl;
+    if (a >= h)
+    {
+        cout << "Yes" << endl;
+    }
+    else
+    {
+        cout << "No" << endl;
+    }
 
     return 0;
 }

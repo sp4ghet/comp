@@ -26,15 +26,28 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    bitset<100> a;
-    ll foo = 1;
-    a = foo;
-    a |= a << 80;
-    rep(i, 81)
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> paths(n, vector<int>());
+    rep(i, m)
     {
-        cout << a.test(i);
+        int a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+        paths[b].push_back(a);
     }
-    cout << endl;
+
+    string im = "IM";
+    for (int a : paths[n - 1])
+    {
+        for (int start : paths[a])
+        {
+            im = start == 0 ? "" : im;
+        }
+    }
+
+    cout << im << "POSSIBLE" << endl;
 
     return 0;
 }

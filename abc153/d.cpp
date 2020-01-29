@@ -26,15 +26,18 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    bitset<100> a;
-    ll foo = 1;
-    a = foo;
-    a |= a << 80;
-    rep(i, 81)
+    ll h;
+    cin >> h;
+
+    int pow = 0;
+    ll ans = exp2(pow);
+    while (h > 1)
     {
-        cout << a.test(i);
+        h /= 2;
+        pow++;
+        ans += exp2(pow);
     }
-    cout << endl;
+    cout << ans << endl;
 
     return 0;
 }

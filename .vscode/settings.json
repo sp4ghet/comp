@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "iostream": "cpp"
-    }
+    },
+    "python.pythonPath": "/Users/sp4ghet/.pyenv/shims/python"
 }

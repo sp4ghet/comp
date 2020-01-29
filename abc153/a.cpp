@@ -26,15 +26,11 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    bitset<100> a;
-    ll foo = 1;
-    a = foo;
-    a |= a << 80;
-    rep(i, 81)
-    {
-        cout << a.test(i);
-    }
-    cout << endl;
+    int H, A;
+    cin >> H >> A;
+    int ans = ceil((float)H / (float)A);
+
+    cout << ans << endl;
 
     return 0;
 }

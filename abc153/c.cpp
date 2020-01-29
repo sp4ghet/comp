@@ -26,15 +26,30 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    bitset<100> a;
-    ll foo = 1;
-    a = foo;
-    a |= a << 80;
-    rep(i, 81)
+    ll n, k;
+    cin >> n >> k;
+    vector<ll> h(n);
+    rep(i, n)
     {
-        cout << a.test(i);
+        cin >> h[i];
     }
-    cout << endl;
+
+    sort(h.begin(), h.end(), greater<ll>());
+    rep(i, k)
+    {
+        if (i == n)
+        {
+            break;
+        }
+        h[i] = 0;
+    }
+    ll ans = 0;
+    rep(i, n)
+    {
+        ans += h[i];
+    }
+
+    cout << ans << endl;
 
     return 0;
 }
