@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
+using ll = long long;
+using P = pair<int, int>;
+
 #define rep(i, n) for (int i = 0; i < n; ++i)
 #pragma region Debug
 template <typename T>
@@ -22,8 +24,7 @@ void view(const std::vector<std::vector<T>> &vv)
 }
 #pragma endregion
 
-#pragma region mod
-const int p = 1e9 + 7; //10^9 + 7
+const int p = 2019;
 struct mint
 {
     ll x;
@@ -83,32 +84,35 @@ struct mint
     }
 };
 
-struct comb
-{
-    vector<mint> fact, invs;
-    comb(int n) : fact(n + 1), invs(n + 1)
-    {
-        assert(n < p);
-
-        fact[0] = 1;
-        for (int i = 1; i <= n; ++i)
-            fact[i] = fact[i - 1] * i;
-
-        invs[n] = fact[n].inv();
-        for (int i = n; i >= 1; --i)
-            invs[i - 1] = invs[i] * i;
-    }
-    mint operator()(int n, int k)
-    {
-        if (k < 0 || k > n)
-            return 0;
-        return fact[n] * invs[n - k] * invs[k];
-    }
-};
-#pragma endregion
-
 int main()
 {
+    int l, r;
+    cin >> l >> r;
+
+    int sml, lrg;
+    sml = min(l % 2019, r % 2019);
+    lrg = max(l % 2019, r % 2019);
+
+    int ans = 2020;
+    for (ll i = l; i < r; i++)
+    {
+        for (ll j = i + 1; j <= r; j++)
+        {
+            int now = (i * j) % 2019ll;
+            ans = min(ans, now);
+            if (ans == 0)
+            {
+                break;
+            }
+        }
+
+        if (ans == 0)
+        {
+            break;
+        }
+    }
+
+    cout << ans << endl;
 
     return 0;
 }

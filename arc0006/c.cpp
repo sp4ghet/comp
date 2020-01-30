@@ -26,15 +26,30 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    bitset<100> a;
-    ll foo = 1;
-    a = foo;
-    a |= a << 80;
-    rep(i, 81)
+    int n;
+    cin >> n;
+    vector<int> piles(n, INT32_MAX);
+    vector<int> w(n);
+    rep(i, n) cin >> w[i];
+
+    int ans = 0;
+    rep(i, n)
     {
-        cout << a.test(i);
+        rep(j, n)
+        {
+            if (piles[j] >= w[i])
+            {
+                if (piles[j] == INT32_MAX)
+                {
+                    ans++;
+                }
+                piles[j] = w[i];
+                break;
+            }
+        }
     }
-    cout << endl;
+
+    cout << ans << endl;
 
     return 0;
 }

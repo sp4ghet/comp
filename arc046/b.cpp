@@ -26,6 +26,30 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
+    int n, a, b;
+    cin >> n >> a >> b;
+
+    if (a > b || n <= a)
+    {
+        cout << "Takahashi" << endl;
+        return 0;
+    }
+    else if (b > a)
+    {
+        cout << "Aoki" << endl;
+        return 0;
+    }
+
+    // a == b && n > a
+    int rem = n % (a + 1);
+    if (rem == 0)
+    {
+        cout << "Aoki" << endl;
+    }
+    else
+    {
+        cout << "Takahashi" << endl;
+    }
 
     return 0;
 }

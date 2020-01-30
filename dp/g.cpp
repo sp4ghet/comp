@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
+using ll = long long;
+using P = pair<int, int>;
+
 #define rep(i, n) for (int i = 0; i < n; ++i)
 #pragma region Debug
 template <typename T>
@@ -21,6 +23,17 @@ void view(const std::vector<std::vector<T>> &vv)
     }
 }
 #pragma endregion
+#pragma region chminmax
+template <typename T>
+inline bool chmin(T &a, T b)
+{
+    if (a > b)
+    {
+        a = b;
+        return true;
+    }
+    return false;
+}
 template <typename T>
 inline bool chmax(T &a, T b)
 {
@@ -31,42 +44,42 @@ inline bool chmax(T &a, T b)
     }
     return false;
 }
+#pragma endregion
 
-map<int, vector<int>> dag;
-vector<int> max_depth;
-int ans = 0;
-void dfs(int v, int d = 0)
+vector<int> dp(100005, -1);
+vector<vector<int>> g(100005, vector<int>());
+
+int dfs(int v)
 {
-    chmax(max_depth[v], d);
-    chmax(ans, max_depth[v]);
-    for (auto &child : dag[v])
+    if (dp[v] != -1)
     {
-        dfs(child, d + 1);
+        return dp[v];
     }
+    int maxLen = 0;
+    for (int child : g[v])
+    {
+        chmax(maxLen, dfs(child) + 1);
+    }
+
+    return dp[v] = maxLen;
 }
 
 int main()
 {
     int n, m;
     cin >> n >> m;
-    vector<bool> start(n, true);
-    max_depth = vector<int>(n, 0);
     rep(i, m)
     {
-        int x, y;
-        cin >> x >> y;
-        x--;
-        y--;
-        dag[x].push_back(y);
-        start[y] = false;
+        int from, to;
+        cin >> from >> to;
+        from--;
+        to--;
+        g[from].emplace_back(to);
     }
-
+    int ans = 0;
     rep(i, n)
     {
-        if (!start[i])
-            continue;
-
-        dfs(i);
+        chmax(ans, dfs(i));
     }
 
     cout << ans << endl;
