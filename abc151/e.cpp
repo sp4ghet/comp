@@ -21,7 +21,6 @@ void view(const std::vector<std::vector<T>> &vv)
     }
 }
 #pragma endregion
-
 #pragma region mod
 const int p = 1e9 + 7; //10^9 + 7
 struct mint
@@ -111,9 +110,18 @@ int main()
 {
     int n, k;
     cin >> n >> k;
-    vector<int> a(n);
+    comb c(n);
+    vector<ll> a(n);
     rep(i, n) cin >> a[i];
+    sort(a.begin(), a.end());
+    mint ans;
+    rep(i, n)
+    {
+        ans += mint(a[i]) * c(i, k - 1);
+        ans -= mint(a[i]) * c(n - i - 1, k - 1);
+    }
 
-    
+    cout << ans.x << endl;
+
     return 0;
 }
