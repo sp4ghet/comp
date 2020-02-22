@@ -118,6 +118,38 @@ struct comb
 
 int main()
 {
+    int n, a, b;
+    cin >> n >> a >> b;
+    mint ans = mint(2).pow(n) - 1;
+    if (a > b)
+    {
+        swap(a, b);
+    }
 
+    vector<mint> fact(b + 1);
+    fact[0] = 1;
+    rep(i, b)
+    {
+        fact[i + 1] = fact[i] * (i + 1);
+    }
+
+    mint fall = 1;
+    rep(i, a)
+    {
+        fall *= (n - i);
+    }
+
+    mint nca = fall * fact[a].inv();
+    for (int i = a; i < b; ++i)
+    {
+        fall *= (n - i);
+    }
+
+    mint ncb = fall * fact[b].inv();
+
+    ans -= nca;
+    ans -= ncb;
+
+    cout << ans.x << endl;
     return 0;
 }
