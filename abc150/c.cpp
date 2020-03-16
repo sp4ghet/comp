@@ -24,41 +24,42 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-
     int n;
     cin >> n;
-    vector<int> p(n);
-    vector<int> q(n);
-    vector<int> fact(n + 1, 1);
-    rep(i, n)
-    {
-        fact[i + 1] = (i + 1) * fact[i];
-    }
+    vector<int> p(n), q(n), r(n);
+    rep(i, n) cin >> p[i];
+    rep(i, n) cin >> q[i];
+    rep(i, n) r[i] = i + 1;
 
-    rep(i, n)
+    int a = 0;
+    int b = 0;
+    int x = 1;
+    do
     {
-        cin >> p[i];
-    }
-    rep(i, n)
-    {
-        cin >> q[i];
-    }
+        bool aok = true, bok = true;
+        rep(i, n)
+        {
+            if (r[i] != p[i])
+            {
+                aok = false;
+            }
+            if (r[i] != q[i])
+            {
+                bok = false;
+            }
+        }
+        if (aok)
+        {
+            a = x;
+        }
+        if (bok)
+        {
+            b = x;
+        }
+        x++;
+    } while (next_permutation(r.begin(), r.end()));
 
-    int np = 1, nq = 1;
-    rep(i, n)
-    {
-        auto unused = vector<int>(p.begin() + i, p.end());
-        sort(unused.begin(), unused.end());
-        int order = distance(unused.begin(), find(unused.begin(), unused.end(), p[i]));
-        np += fact[n - i - 1] * (order);
-
-        auto uq = vector<int>(q.begin() + i, q.end());
-        sort(uq.begin(), uq.end());
-        int oq = distance(uq.begin(), find(uq.begin(), uq.end(), q[i]));
-        nq += fact[n - i - 1] * oq;
-    }
-
-    cout << abs(np - nq) << endl;
+    cout << abs(a - b) << endl;
 
     return 0;
 }
