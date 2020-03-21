@@ -48,25 +48,30 @@ inline bool chmax(T &a, T b)
 
 int main()
 {
-    int n, w;
-    cin >> n >> w;
-    vector<P> b(n);
-    // v, w
-    rep(i, n) cin >> b[i].first >> b[i].second;
+    int n, m;
+    cin >> n >> m;
+    vector<int> c(m);
+    rep(i, m) cin >> c[i];
 
-    vector<vector<int>> dp(n + 1, vector<int>(w + 1));
-    rep(i, n)
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, n + 5));
+    rep(i, n + 1) dp[0][i] = i;
+
+    rep(i, m)
     {
-        rep(j, w + 1)
+        rep(j, n + 1)
         {
-            if (j - b[i].second >= 0)
+            // no use
+            chmin(dp[i + 1][j], dp[i][j]);
+
+            // use
+            if (j - c[i] >= 0)
             {
-                chmax(dp[i + 1][j], dp[i][j - b[i].second] + b[i].first);
+                chmin(dp[i + 1][j], dp[i + 1][j - c[i]] + 1);
             }
-            chmax(dp[i + 1][j], dp[i][j]);
         }
     }
-    cout << dp[n][w] << endl;
+
+    cout << dp[m][n] << endl;
 
     return 0;
 }

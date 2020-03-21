@@ -62,6 +62,7 @@ int main()
             if (j - b[i].second >= 0)
             {
                 chmax(dp[i + 1][j], dp[i][j - b[i].second] + b[i].first);
+                chmax(dp[i + 1][j], dp[i + 1][j - b[i].second] + b[i].first);
             }
             chmax(dp[i + 1][j], dp[i][j]);
         }
