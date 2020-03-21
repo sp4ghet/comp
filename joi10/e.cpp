@@ -28,67 +28,74 @@ int main()
 {
     int h, w, n;
     cin >> h >> w >> n;
-    vector<vector<char>> c(h, vector<char>(w));
-    vector<P> f(n);
+    vector<vector<char>> g(h, vector<char>(w));
     P s;
-    queue<P> q;
-    rep(i, h) rep(j, w)
+    vector<P> t(n);
+    rep(y, h) rep(x, w)
     {
-        cin >> c[i][j];
-        if (c[i][j] == 'S')
+        cin >> g[y][x];
+        if (g[y][x] == 'S')
+            s = P(y, x);
+        if (g[y][x] - '1' >= 0 && g[y][x] - '1' < n)
         {
-            s = P(i, j);
-        }
-        int factory = c[i][j] - '0' - 1;
-        if (factory >= 0 && factory < n)
-        {
-            f[factory] = P(i, j);
+            t[g[y][x] - '1'] = P(y, x);
         }
     }
 
     int ans = 0;
     rep(i, n)
     {
-        P g = f[i];
+        queue<P> q;
+        q.push(s);
         vector<vector<int>> d(h, vector<int>(w, -1));
         d[s.first][s.second] = 0;
-        q.push(s);
         while (q.size())
         {
             P n = q.front();
             q.pop();
-
-            int nd = d[n.first][n.second];
-            if (n == g)
+            int ny = n.first,
+                nx = n.second;
+            if (n == t[i])
             {
-                ans += nd;
-                q = queue<P>();
                 break;
             }
-            if (n.first > 0 && c[n.first - 1][n.second] != 'X' && d[n.first - 1][n.second] == -1)
-            {
-                q.push(P(n.first - 1, n.second));
-                d[n.first - 1][n.second] = nd + 1;
-            }
 
-            if (n.second > 0 && c[n.first][n.second - 1] != 'X' && d[n.first][n.second - 1] == -1)
+            if (ny > 0 && g[ny - 1][nx] != 'X')
             {
-                q.push(P(n.first, n.second - 1));
-                d[n.first][n.second - 1] = nd + 1;
+                if (d[ny - 1][nx] < 0)
+                {
+                    d[ny - 1][nx] = d[ny][nx] + 1;
+                    q.push(P(ny - 1, nx));
+                }
             }
-            if (n.first < h - 1 && c[n.first + 1][n.second] != 'X' && d[n.first + 1][n.second] == -1)
+            if (ny < h - 1 && g[ny + 1][nx] != 'X')
             {
-                q.push(P(n.first + 1, n.second));
-                d[n.first + 1][n.second] = nd + 1;
+                if (d[ny + 1][nx] < 0)
+                {
+                    d[ny + 1][nx] = d[ny][nx] + 1;
+                    q.push(P(ny + 1, nx));
+                }
             }
-
-            if (n.second < w - 1 && c[n.first][n.second + 1] != 'X' && d[n.first][n.second + 1] == -1)
+            if (nx > 0 && g[ny][nx - 1] != 'X')
             {
-                q.push(P(n.first, n.second + 1));
-                d[n.first][n.second + 1] = nd + 1;
+                if (d[ny][nx - 1] < 0)
+                {
+                    d[ny][nx - 1] = d[ny][nx] + 1;
+                    q.push(P(ny, nx - 1));
+                }
+            }
+            if (nx < w - 1 && g[ny][nx + 1] != 'X')
+            {
+                if (d[ny][nx + 1] < 0)
+                {
+                    d[ny][nx + 1] = d[ny][nx] + 1;
+                    q.push(P(ny, nx + 1));
+                }
             }
         }
-        s = g;
+        int now = d[t[i].first][t[i].second];
+        ans += now;
+        s = t[i];
     }
 
     cout << ans << endl;

@@ -24,64 +24,69 @@ void view(const std::vector<std::vector<T>> &vv)
 }
 #pragma endregion
 
-vector<vector<char>> m;
-vector<vector<int>> d;
-queue<P> q;
-
-int bfs(P g, int r, int c)
+int main()
 {
+    int r, c;
+    cin >> r >> c;
+    int sy, sx, gy, gx;
+    cin >> sy >> sx >> gy >> gx;
+    sy--;
+    sx--;
+    gy--;
+    gx--;
+
+    vector<vector<char>> g(r, vector<char>(c));
+    rep(y, r) rep(x, c) cin >> g[y][x];
+
+    queue<P> q;
+    vector<vector<int>> d(r, vector<int>(c, -1));
+    q.push(P(sy, sx));
+    d[sy][sx] = 0;
+
     while (q.size())
     {
         P n = q.front();
         q.pop();
-        int nd = d[n.first][n.second];
-        if (n.first == g.first && n.second == g.second)
+        if (n.first == gy && n.second == gx)
         {
-            return nd;
+            break;
         }
-        if (n.first < r - 1 && d[n.first + 1][n.second] == -1 && m[n.first + 1][n.second] == '.')
+
+        if (n.first > 0 && g[n.first - 1][n.second] == '.')
         {
-            q.push(P(n.first + 1, n.second));
-            d[n.first + 1][n.second] = nd + 1;
+            if (d[n.first - 1][n.second] < 0)
+            {
+                d[n.first - 1][n.second] = d[n.first][n.second] + 1;
+                q.push(P(n.first - 1, n.second));
+            }
         }
-        if (n.first > 0 && d[n.first - 1][n.second] == -1 && m[n.first - 1][n.second] == '.')
+        if (n.first < r - 1 && g[n.first + 1][n.second] == '.')
         {
-            q.push(P(n.first - 1, n.second));
-            d[n.first - 1][n.second] = nd + 1;
+            if (d[n.first + 1][n.second] < 0)
+            {
+                d[n.first + 1][n.second] = d[n.first][n.second] + 1;
+                q.push(P(n.first + 1, n.second));
+            }
         }
-        if (n.second < c - 1 && d[n.first][n.second + 1] == -1 && m[n.first][n.second + 1] == '.')
+        if (n.second > 0 && g[n.first][n.second - 1] == '.')
         {
-            q.push(P(n.first, n.second + 1));
-            d[n.first][n.second + 1] = nd + 1;
+            if (d[n.first][n.second - 1] < 0)
+            {
+                d[n.first][n.second - 1] = d[n.first][n.second] + 1;
+                q.push(P(n.first, n.second - 1));
+            }
         }
-        if (n.second > 0 && d[n.first][n.second - 1] == -1 && m[n.first][n.second - 1] == '.')
+        if (n.second < c - 1 && g[n.first][n.second + 1] == '.')
         {
-            q.push(P(n.first, n.second - 1));
-            d[n.first][n.second - 1] = nd + 1;
+            if (d[n.first][n.second + 1] < 0)
+            {
+                d[n.first][n.second + 1] = d[n.first][n.second] + 1;
+                q.push(P(n.first, n.second + 1));
+            }
         }
     }
-    return d[g.first][g.second];
-}
 
-int main()
-{
-    int r, c;
-    P s, g;
-    cin >> r >> c >> s.first >> s.second >> g.first >> g.second;
-    s.first--;
-    s.second--;
-    g.first--;
-    g.second--;
-
-    m = vector<vector<char>>(r, vector<char>(c));
-    d = vector<vector<int>>(r, vector<int>(c, -1));
-    rep(i, r) rep(j, c) cin >> m[i][j];
-
-    q.push(s);
-    d[s.first][s.second] = 0;
-    int ans = bfs(g, r, c);
-
-    cout << ans << endl;
+    cout << d[gy][gx] << endl;
 
     return 0;
 }
