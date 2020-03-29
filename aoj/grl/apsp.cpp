@@ -64,6 +64,8 @@ int main()
         dp[i][i] = 0;
     }
 
+    // floyd warshall
+    // ワーシャルフロイド
     rep(k, v) rep(i, v) rep(j, v)
     {
         if (dp[i][k] == INF || dp[k][j] == INF)

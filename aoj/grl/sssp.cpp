@@ -36,6 +36,8 @@ int main()
         g[s].emplace_back(P(t, d));
     }
 
+    // djikstra
+    // ダイクストラ法
     vector<int> d(v, INT32_MAX);
     d[r] = 0;
     priority_queue<int> p;
