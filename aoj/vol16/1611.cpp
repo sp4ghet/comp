@@ -83,6 +83,8 @@ int main()
         int ans = calc(0, n, dp, w);
         cout << ans << endl;
 
+        view(dp);
+
         cin >> n;
     }
 

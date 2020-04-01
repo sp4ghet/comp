@@ -2,21 +2,9 @@
 using namespace std;
 using ll = long long;
 using P = pair<int, int>;
-using vint = vector<int>;
-using vvint = vector<vint>;
-using vll = vector<ll>;
-using vvll = vector<vll>;
-using vchar = vector<char>;
-using vvchar = vector<vchar>;
 
 #define rep(i, n) for (int i = 0; i < n; ++i)
 #pragma region Debug
-istream &operator>>(istream &is, P &a)
-{
-    return is >> a.first >> a.second;
-}
-ostream &operator<<(ostream &os, const P &a) { return os << "(" << a.first << "," << a.second << ")"; }
-
 template <typename T>
 void view(const std::vector<T> &v)
 {
@@ -60,6 +48,30 @@ inline bool chmax(T &a, T b)
 
 int main()
 {
+    int n, m;
+    cin >> n >> m;
+    do
+    {
+        vector<int> c(m);
+        rep(i, m) cin >> c[i];
+        vector<int> x(n);
+        rep(i, n) cin >> x[i];
+
+        vector<vector<ll>> dp(n + 1, vector<ll>(256, INT32_MAX));
+        dp[0][128] = 0;
+        rep(i, n) rep(j, m) rep(k, 256)
+        {
+            int p = min(255, max(0, k + c[j]));
+            ll d = x[i] - p;
+
+            chmin(dp[i + 1][p], dp[i][k] + d * d);
+        }
+
+        ll ans = min_element(dp[n].begin(), dp[n].end())[0];
+
+        cout << ans << endl;
+        cin >> n >> m;
+    } while (n != 0 && m != 0);
 
     return 0;
 }

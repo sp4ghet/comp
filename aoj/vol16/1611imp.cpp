@@ -1,22 +1,12 @@
+#define _GLIBCXX_DEBUG
+
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
 using P = pair<int, int>;
-using vint = vector<int>;
-using vvint = vector<vint>;
-using vll = vector<ll>;
-using vvll = vector<vll>;
-using vchar = vector<char>;
-using vvchar = vector<vchar>;
 
 #define rep(i, n) for (int i = 0; i < n; ++i)
 #pragma region Debug
-istream &operator>>(istream &is, P &a)
-{
-    return is >> a.first >> a.second;
-}
-ostream &operator<<(ostream &os, const P &a) { return os << "(" << a.first << "," << a.second << ")"; }
-
 template <typename T>
 void view(const std::vector<T> &v)
 {
@@ -58,8 +48,46 @@ inline bool chmax(T &a, T b)
 }
 #pragma endregion
 
+void sol(int n, vector<int> &w)
+{
+    vector<vector<int>> dp(n, vector<int>(n + 1));
+
+    rep(i, n - 1)
+    {
+        if (abs(w[i] - w[i + 1]) < 2)
+        {
+            dp[i][i + 2] = 2;
+        }
+    }
+
+    for (int h = 2; h <= n; h++)
+    {
+        for (int l = 0; l <= n - h; l++)
+        {
+            int r = l + h;
+            if (dp[l + 1][r - 1] == r - l - 2 && abs(w[l] - w[r - 1]) < 2)
+            {
+                chmax(dp[l][r], 2 + dp[l + 1][r - 1]);
+            }
+            for (int m = l; m < r; m++)
+            {
+                chmax(dp[l][r], dp[l][m] + dp[m][r]);
+            }
+        }
+    }
+
+    cout << dp[0][n] << endl;
+}
+
 int main()
 {
+    int n;
+    while (cin >> n, n)
+    {
+        vector<int> w(n);
+        rep(i, n) cin >> w[i];
+        sol(n, w);
+    }
 
     return 0;
 }
