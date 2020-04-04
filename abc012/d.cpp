@@ -58,26 +58,37 @@ inline bool chmax(T &a, T b)
 }
 #pragma endregion
 
+#define INF 1LL << 50
+
 int main()
 {
-    int h, w;
-    cin >> h >> w;
-    vvll dp(10, vll(10, (1LL << 50)));
-    rep(i, 10) rep(j, 10) cin >> dp[i][j];
-    rep(k, 10) rep(i, 10) rep(j, 10)
+    int n, m;
+    cin >> n >> m;
+    vvll dp(n, vll(n, INF));
+    rep(i, m)
     {
+        int f, t, c;
+        cin >> f >> t >> c;
+        f--;
+        t--;
+        dp[f][t] = c;
+        dp[t][f] = c;
+    }
+    rep(i, n) dp[i][i] = 0;
+
+    rep(k, n) rep(i, n) rep(j, n)
+    {
+        if (dp[i][k] == INF || dp[k][j] == INF)
+            continue;
+
         chmin(dp[i][j], dp[i][k] + dp[k][j]);
     }
 
-    ll ans = 0;
-    rep(y, h) rep(x, w)
+    ll ans = INF;
+    rep(i, n)
     {
-        int k;
-        cin >> k;
-        if (k < 0)
-            continue;
-
-        ans += dp[k][1];
+        ll now = max_element(dp[i].begin(), dp[i].end())[0];
+        chmin(ans, now);
     }
 
     cout << ans << endl;

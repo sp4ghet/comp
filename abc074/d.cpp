@@ -60,24 +60,48 @@ inline bool chmax(T &a, T b)
 
 int main()
 {
-    int h, w;
-    cin >> h >> w;
-    vvll dp(10, vll(10, (1LL << 50)));
-    rep(i, 10) rep(j, 10) cin >> dp[i][j];
-    rep(k, 10) rep(i, 10) rep(j, 10)
+    int n;
+    cin >> n;
+    vvll dp(n, vll(n));
+    rep(i, n) rep(j, n) cin >> dp[i][j];
+
+    vvll backup = dp;
+
+    rep(k, n) rep(i, n) rep(j, n)
     {
         chmin(dp[i][j], dp[i][k] + dp[k][j]);
     }
 
-    ll ans = 0;
-    rep(y, h) rep(x, w)
+    bool ok = true;
+    rep(i, n) rep(j, n)
     {
-        int k;
-        cin >> k;
-        if (k < 0)
+        if (backup[i][j] != dp[i][j])
+        {
+            ok = false;
+            break;
+        }
+    }
+
+    if (!ok)
+    {
+        cout << -1 << endl;
+        return 0;
+    }
+
+    rep(k, n) rep(i, n) rep(j, n)
+    {
+        if (i == j || i == k || j == k)
             continue;
 
-        ans += dp[k][1];
+        if (dp[i][j] == dp[i][k] + dp[k][j])
+        {
+            backup[i][j] = 0;
+        }
+    }
+    ll ans = 0;
+    rep(i, n) for (int j = i; j < n; j++)
+    {
+        ans += backup[i][j];
     }
 
     cout << ans << endl;

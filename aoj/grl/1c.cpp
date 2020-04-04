@@ -58,29 +58,57 @@ inline bool chmax(T &a, T b)
 }
 #pragma endregion
 
+ll INF = 1LL << 50;
+
 int main()
 {
-    int h, w;
-    cin >> h >> w;
-    vvll dp(10, vll(10, (1LL << 50)));
-    rep(i, 10) rep(j, 10) cin >> dp[i][j];
-    rep(k, 10) rep(i, 10) rep(j, 10)
+    int v, e;
+    cin >> v >> e;
+    vvll dp(v, vll(v, INF));
+    rep(i, e)
     {
+        int f, t, c;
+        cin >> f >> t >> c;
+        dp[f][t] = c;
+    }
+    rep(i, v) dp[i][i] = 0;
+
+    rep(k, v) rep(i, v) rep(j, v)
+    {
+        if (dp[i][k] == INF || dp[k][j] == INF)
+        {
+            continue;
+        }
         chmin(dp[i][j], dp[i][k] + dp[k][j]);
     }
 
-    ll ans = 0;
-    rep(y, h) rep(x, w)
+    rep(i, v)
     {
-        int k;
-        cin >> k;
-        if (k < 0)
-            continue;
-
-        ans += dp[k][1];
+        if (dp[i][i] < 0)
+        {
+            cout << "NEGATIVE CYCLE" << endl;
+            return 0;
+        }
     }
 
-    cout << ans << endl;
+    rep(i, v)
+    {
+        rep(j, v)
+        {
+            if (dp[i][j] == INF)
+            {
+                cout << "INF";
+            }
+            else
+            {
+                cout << dp[i][j];
+            }
+            if (j == v - 1)
+                continue;
+            cout << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
