@@ -134,6 +134,38 @@ struct comb
 
 int main()
 {
+    int n, q;
+    cin >> n >> q;
+    using vmint = vector<mint>;
+    vmint a(n);
+    vint c(q + 2);
+    rep(i, n) cin >> a[i];
+    rep(i, q)
+    {
+        cin >> c[i + 1];
+        c[i + 1]--;
+    }
+    vmint d(n);
+    for (int i = 0; i < n - 1; ++i)
+    {
+        d[i + 1] = d[i] + a[i].pow(a[i + 1].x);
+    }
+
+    mint ans = 0;
+    int from = 0;
+    for (int to : c)
+    {
+        if (to < from)
+        {
+            ans += d[from] - d[to];
+        }
+        else
+        {
+            ans += d[to] - d[from];
+        }
+        from = to;
+    }
+    cout << ans << endl;
 
     return 0;
 }

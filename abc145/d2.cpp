@@ -132,8 +132,36 @@ struct comb
 };
 #pragma endregion
 
+mint solve(int x, int y)
+{
+    if ((x + y) % 3)
+        return 0;
+
+    int n = x + y;
+    n /= 3;
+    int r = x - n;
+    comb ncr(n);
+
+    return ncr(n, r);
+}
+
 int main()
 {
+    int x, y;
+    cin >> x >> y;
+    mint ans = solve(x, y);
+    cout << ans << endl;
+
+    // (1,2) (2,1)
+    // (2,4) (3,3) (3,3) (4,2)
+    // (3, 6) (4,5) (4,5) (4,5) (5,4) (5,4) (5,4) (6, 3)
+    // (4,8) (5,7). (5,7) (5,7) (5,7) (6,6) (6,6) (6,6). (6,6) (6,6) (6,6) (7,5) (7,5) (7,5). (7,5) (8, 4)
+
+    // 1 1
+    // 1 2 1
+    // 1 3 3 1
+    // 1 4 6 4 1
+    //
 
     return 0;
 }

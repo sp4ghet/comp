@@ -134,6 +134,11 @@ struct comb
 
 int main()
 {
+    int n, k;
+    cin >> n >> k;
+    comb ncr(n + k - 1);
+
+    cout << ncr(n + k - 1, k) << endl;
 
     return 0;
 }

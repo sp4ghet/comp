@@ -134,6 +134,11 @@ struct comb
 
 int main()
 {
+    int h, w;
+    cin >> w >> h;
+    comb ncr(h + w);
+
+    cout << ncr(h + w - 2, h - 1) << endl;
 
     return 0;
 }

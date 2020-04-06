@@ -132,8 +132,52 @@ struct comb
 };
 #pragma endregion
 
+using vp = vector<P>;
+
+int n;
+vvint g;
+mint ans = 0;
+int dfs(int v, int p = -1)
+{
+    mint now = mint(2).pow(n - 1) - 1;
+    int size = 1;
+    for (int nv : g[v])
+    {
+        if (nv == p)
+            continue;
+        int sz = dfs(nv, v);
+        size += sz;
+        now -= mint(2).pow(sz) - 1;
+    }
+
+    if (p != -1)
+    {
+        int pSize = n - size;
+        now -= mint(2).pow(pSize) - 1;
+    }
+
+    ans += now;
+
+    return size;
+}
+
 int main()
 {
+    cin >> n;
+    g = vvint(n, vint());
+    rep(i, n - 1)
+    {
+        int f, t;
+        cin >> f >> t;
+        f--;
+        t--;
+        g[f].emplace_back(t);
+        g[t].emplace_back(f);
+    }
+    dfs(0);
+    ans /= mint(2).pow(n);
+
+    cout << ans << endl;
 
     return 0;
 }

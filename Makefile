@@ -15,9 +15,9 @@ a.out: $(TARGET)
 	-o ./a.out \
 	-Wshadow \
 	-Wno-unknown-pragmas  \
-	# -fsanitize=address \
 	-fsanitize=undefined \
-	-D_GLIBCXX_DEBUG 
+	-D_GLIBCXX_DEBUG \
+	# -fsanitize=address
 
 run: a.out
 	./a.out
