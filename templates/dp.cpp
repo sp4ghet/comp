@@ -8,6 +8,9 @@ using vll = vector<ll>;
 using vvll = vector<vll>;
 using vchar = vector<char>;
 using vvchar = vector<vchar>;
+using vp = vector<P>;
+using vpp = vector<pair<P, P>>;
+using vvp = vector<vp>;
 
 #define rep(i, n) for (int i = 0; i < n; ++i)
 #pragma region Debug
