@@ -59,11 +59,6 @@ int main()
     rep(i, n)
     {
         cin >> a[i];
-        if (a[i] % 2 == 1)
-        {
-            cout << 0 << endl;
-            return 0;
-        }
         a[i] /= 2;
     }
 
@@ -75,9 +70,9 @@ int main()
             cout << 0 << endl;
             return 0;
         }
-        a[i] = a[i] >> k;
+        // a[i] = a[i] >> k;
     }
-    m = m >> k;
+    // m = m >> k;
     ll t = 1;
     for (auto &x : a)
     {
