@@ -2,9 +2,24 @@
 using namespace std;
 using ll = long long;
 using P = pair<int, int>;
+using vint = vector<int>;
+using vvint = vector<vint>;
+using vll = vector<ll>;
+using vvll = vector<vll>;
+using vchar = vector<char>;
+using vvchar = vector<vchar>;
+using vp = vector<P>;
+using vpp = vector<pair<P, P>>;
+using vvp = vector<vp>;
 
 #define rep(i, n) for (int i = 0; i < n; ++i)
 #pragma region Debug
+istream &operator>>(istream &is, P &a)
+{
+    return is >> a.first >> a.second;
+}
+ostream &operator<<(ostream &os, const P &a) { return os << "(" << a.first << "," << a.second << ")"; }
+
 template <typename T>
 void view(const std::vector<T> &v)
 {
@@ -26,49 +41,46 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<set<int>> s(26, set<int>());
-    rep(i, n)
-    {
-        char a;
-        cin >> a;
-        a -= 'a';
-        s[a].insert(i + 1);
-    }
-    int q;
-    cin >> q;
+    int n, q;
+    string s;
+    cin >> n >> s >> q;
+    vector<set<int>> m(26);
+    rep(i, n) m[s[i] - 'a'].insert(i);
     rep(i, q)
     {
         int t;
         cin >> t;
         if (t == 1)
         {
-            int iq;
+            int j;
             char c;
-            cin >> iq >> c;
-            c -= 'a';
-            rep(j, 26)
-            {
-                s[j].erase(iq);
-            }
-            s[c].insert(iq);
+            cin >> j >> c;
+            j--;
+            m[s[j] - 'a'].erase(j);
+            m[c - 'a'].insert(j);
+            s[j] = c;
         }
         else
         {
             int l, r;
             cin >> l >> r;
+            l--;
+            r--;
             int ans = 0;
             rep(j, 26)
             {
-                int lb = *s[j].lower_bound(l);
-                if (lb >= l && lb <= r)
+
+                auto lb = m[j].lower_bound(l);
+                int lbn = lb == m[j].end() ? -1 : *lb;
+                if (lbn >= l && lbn <= r)
                 {
                     ans++;
                 }
             }
+
             cout << ans << endl;
         }
     }
+
     return 0;
 }
