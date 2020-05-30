@@ -1,0 +1,31 @@
+{
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "atcoder build current file",
+      "command": "/usr/local/bin/g++",
+      "args": [
+        "-g",
+        "${file}",
+        "-o",
+        "a.out",
+        "-std=gnu++17",
+        "-Wall",
+        "-Wextra",
+        "-DONLINE_JUDGE",
+        "-O2",
+        "-I/usr/local/Cellar/boost/1.72.0/include",
+        "-L/usr/local/Cellar/boost/1.72.0/lib",
+        "--debug"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    }
+  ],
+  "version": "2.0.0"
+}

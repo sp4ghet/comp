@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
-using P = pair<int, int>;
+using P = pair<ll, ll>;
 using vint = vector<int>;
 using vvint = vector<vint>;
 using vll = vector<ll>;
@@ -13,6 +13,8 @@ using vpp = vector<pair<P, P>>;
 using vvp = vector<vp>;
 
 #define rep(i, n) for (int i = 0; i < n; ++i)
+#define fst first
+#define snd second
 #pragma region Debug
 istream &operator>>(istream &is, P &a)
 {
@@ -135,8 +137,9 @@ struct comb
 };
 #pragma endregion
 
-mint nc2(mint n)
+ll gcd(ll a, ll b)
 {
+    return __gcd(a, b);
 }
 
 int main()
@@ -145,41 +148,35 @@ int main()
     cin >> n;
     vll a(n), b(n);
     rep(i, n) cin >> a[i] >> b[i];
-
-    if (n == 1)
-    {
-        cout << 1 << endl;
-        return 0;
-    }
-    if (n == 2)
-    {
-        bool ok = a[0] * a[1] + b[0] * b[1] != 0;
-        if (ok)
-        {
-            cout << 3 << endl;
-        }
-        else
-        {
-            cout << 2 << endl;
-        }
-        return 0;
-    }
-
-    map<long double, int> ic, jc;
+    map<P, int> ic, jc;
+    int zeros = 0;
     rep(i, n)
     {
-        long double ifrac = (long double)a[i] / b[i];
-        long double jfrac = (long double)(-b[i]) / a[i];
-        ic[ifrac]++;
-        jc[jfrac]++;
+        if (a[i] == 0 && b[i] == 0)
+        {
+            zeros++;
+            continue;
+        }
+        // the signs on these are fucking janky
+        int ai = a[i] / gcd(a[i], b[i]), bi = b[i] / gcd(a[i], b[i]);
+        ic[P(ai, bi)]++;
+        jc[P(-bi, ai)]++;
     }
-    mint ans = mint(2).pow(n) - 1;
-    for (P p : ic)
+
+    mint ans = 1;
+    for (auto p : ic)
     {
-        int js = jc[p.first];
-        js = max(js, p.second);
-        ans -= mint(2).pow(n - 2);
+        int icount = p.snd;
+        int jcount = jc[p.fst];
+        mint now = 1;
+        now += mint(2).pow(icount) - 1;
+        now += mint(2).pow(jcount) - 1;
+        printf("%d %d %d %d\n", icount, jcount, now, ans);
+        ans *= now;
     }
+    ans += zeros;
+    ans -= 1;
+
     cout << ans << endl;
 
     return 0;
