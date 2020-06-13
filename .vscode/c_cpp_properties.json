@@ -5,7 +5,9 @@
       "includePath": [
         "${workspaceFolder}/**",
         "/usr/local/include/**",
-        "/usr/local/Cellar/boost/1.72.0/include/**"
+        "/usr/local/Cellar/boost/1.72.0/include/**",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/**",
+        "/usr/local/Cellar/gcc/9.3.0_1/lib/gcc/9/gcc/x86_64-apple-darwin19/9.3.0/include/**"
       ],
       "defines": [],
       "macFrameworkPath": [
