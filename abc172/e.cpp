@@ -153,8 +153,6 @@ int main()
     rep(i, n)
     {
         mult -= rem - 1;
-        if (rem.x == 2)
-            continue;
         rem -= 1;
     }
 
