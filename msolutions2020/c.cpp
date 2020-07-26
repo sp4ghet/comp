@@ -12,7 +12,7 @@ using vp = vector<P>;
 using vpp = vector<pair<P, P>>;
 using vvp = vector<vp>;
 
-#define rep(i, n) for (int i = 0; i < n; ++i)
+#define rep(i, n) for (ll i = 0; i < n; ++i)
 #pragma region Debug
 istream &operator>>(istream &is, P &a)
 {
@@ -44,6 +44,27 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
+    ll n, k;
+    cin >> n >> k;
+    vll a(n);
+    rep(i, n) cin >> a[i];
+
+    rep(i, n)
+    {
+        if (i < k)
+        {
+            continue;
+        }
+        if (a[i] > a[i - k])
+        {
+            cout << "Yes\n";
+        }
+        else
+        {
+            cout << "No\n";
+        }
+    }
+    cout << endl;
 
     return 0;
 }
