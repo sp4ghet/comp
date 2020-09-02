@@ -44,56 +44,25 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    int n, k;
-    cin >> n >> k;
-    vint a(n);
+    int n;
+    cin >> n;
+    vp a(n);
     rep(i, n)
     {
-        cin >> a[i];
+        int x, b;
+        cin >> x >> b;
+        a[i] = {b, x};
     }
-
-    vll s(n + 1);
-    rep(i, n) s[i + 1] = s[i] + a[i];
-
-    ll ans = 0;
-    rep(i, k + 1)
+    sort(a.begin(), a.end());
+    int t = 0;
+    bool ok = true;
+    rep(i, n)
     {
-        if (i > n)
-            break;
-
-        ll left = s[i];
-
-        rep(j, k - i + 1)
-        {
-            if (i + j > n)
-                break;
-            ll l = k - i - j;
-            if (l < 0)
-                continue;
-
-            ll right = s[n] - s[n - j];
-
-            multiset<ll> st;
-            rep(x, i) st.emplace(a[x]);
-            rep(x, j) st.emplace(a[n - 1 - x]);
-            ll now = left + right;
-            while (st.size() && l)
-            {
-                ll x = *(st.begin());
-                if (x >= 0)
-                    break;
-                l--;
-                st.erase(x);
-                now -= x;
-            }
-
-            // printf("%d %d %d: %ld %ld, ", i, j, l, left, right);
-            // cout << now << endl;
-            ans = max(now, ans);
-        }
+        t += a[i].second;
+        ok = ok && t <= a[i].first;
     }
 
-    cout << ans << endl;
+    cout << (ok ? "Yes" : "No") << endl;
 
     return 0;
 }

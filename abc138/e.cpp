@@ -44,54 +44,45 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    int n, k;
-    cin >> n >> k;
-    vint a(n);
-    rep(i, n)
+    string s, t;
+    cin >> s >> t;
+    map<char, vint> m;
+    rep(i, s.size())
     {
-        cin >> a[i];
+        m[s[i]].emplace_back(i + 1);
     }
-
-    vll s(n + 1);
-    rep(i, n) s[i + 1] = s[i] + a[i];
+    if (m[t[0]].size() == 0)
+    {
+        cout << -1 << endl;
+        return 0;
+    }
 
     ll ans = 0;
-    rep(i, k + 1)
+    int pre = -1;
+    rep(i, t.size())
     {
-        if (i > n)
-            break;
-
-        ll left = s[i];
-
-        rep(j, k - i + 1)
+        if (!m[t[i]].size())
         {
-            if (i + j > n)
-                break;
-            ll l = k - i - j;
-            if (l < 0)
-                continue;
+            cout << -1 << endl;
+            return 0;
+        }
+        int idx = upper_bound(m[t[i]].begin(), m[t[i]].end(), pre) - m[t[i]].begin();
+        if (idx == m[t[i]].size())
+            idx--;
 
-            ll right = s[n] - s[n - j];
-
-            multiset<ll> st;
-            rep(x, i) st.emplace(a[x]);
-            rep(x, j) st.emplace(a[n - 1 - x]);
-            ll now = left + right;
-            while (st.size() && l)
-            {
-                ll x = *(st.begin());
-                if (x >= 0)
-                    break;
-                l--;
-                st.erase(x);
-                now -= x;
-            }
-
-            // printf("%d %d %d: %ld %ld, ", i, j, l, left, right);
-            // cout << now << endl;
-            ans = max(now, ans);
+        if (pre >= m[t[i]][idx])
+        {
+            // printf("%d %d %c\n", pre, m[t[i]][idx], t[i]);
+            // view(m[t[i]]);
+            ans += s.size();
+            pre = m[t[i]][0];
+        }
+        else
+        {
+            pre = m[t[i]][idx];
         }
     }
+    ans += pre;
 
     cout << ans << endl;
 

@@ -44,53 +44,52 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    int n, k;
-    cin >> n >> k;
-    vint a(n);
-    rep(i, n)
-    {
-        cin >> a[i];
-    }
+    int h, w;
+    cin >> h >> w;
+    vvchar g(h, vchar(w));
+    rep(y, h) rep(x, w) cin >> g[y][x];
 
-    vll s(n + 1);
-    rep(i, n) s[i + 1] = s[i] + a[i];
-
-    ll ans = 0;
-    rep(i, k + 1)
+    int ans = 0;
+    rep(y, h) rep(x, w)
     {
-        if (i > n)
+        if (g[y][x] == '#')
+            continue;
+        if (ans == h + w - 1)
             break;
-
-        ll left = s[i];
-
-        rep(j, k - i + 1)
+        int now = 0;
+        for (int ry = y; ry <= h; ry++)
         {
-            if (i + j > n)
-                break;
-            ll l = k - i - j;
-            if (l < 0)
-                continue;
-
-            ll right = s[n] - s[n - j];
-
-            multiset<ll> st;
-            rep(x, i) st.emplace(a[x]);
-            rep(x, j) st.emplace(a[n - 1 - x]);
-            ll now = left + right;
-            while (st.size() && l)
+            if (ry >= h || g[ry][x] == '#')
             {
-                ll x = *(st.begin());
-                if (x >= 0)
-                    break;
-                l--;
-                st.erase(x);
-                now -= x;
+                now += ry - y - 1;
+                break;
             }
-
-            // printf("%d %d %d: %ld %ld, ", i, j, l, left, right);
-            // cout << now << endl;
-            ans = max(now, ans);
         }
+        for (int ry = y; ry >= -1; ry--)
+        {
+            if (ry < 0 || g[ry][x] == '#')
+            {
+                now += y - ry - 1;
+                break;
+            }
+        }
+        for (int rx = x; rx <= w; rx++)
+        {
+            if (rx >= w || g[y][rx] == '#')
+            {
+                now += rx - x - 1;
+                break;
+            }
+        }
+        for (int rx = x; rx >= -1; rx--)
+        {
+            if (rx < 0 || g[y][rx] == '#')
+            {
+                now += x - rx - 1;
+                break;
+            }
+        }
+        ans = max(ans, now + 1);
     }
 
     cout << ans << endl;

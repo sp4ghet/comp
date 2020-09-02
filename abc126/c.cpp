@@ -42,58 +42,32 @@ void view(const std::vector<std::vector<T>> &vv)
 }
 #pragma endregion
 
+long double z = 0;
 int main()
 {
-    int n, k;
+    long double n, k;
     cin >> n >> k;
-    vint a(n);
-    rep(i, n)
+    long double p = max(z, (n - k) / n);
+    cout.precision(15);
+    // std::cout.setf(std::ios::fixed, std::ios::floatfield);
+
+    long double q = 0.;
+    for (ll i = 1; i <= min(k, n); i++)
     {
-        cin >> a[i];
-    }
-
-    vll s(n + 1);
-    rep(i, n) s[i + 1] = s[i] + a[i];
-
-    ll ans = 0;
-    rep(i, k + 1)
-    {
-        if (i > n)
-            break;
-
-        ll left = s[i];
-
-        rep(j, k - i + 1)
+        long double now = 1.0;
+        ll j = i;
+        while (j < k)
         {
-            if (i + j > n)
-                break;
-            ll l = k - i - j;
-            if (l < 0)
-                continue;
-
-            ll right = s[n] - s[n - j];
-
-            multiset<ll> st;
-            rep(x, i) st.emplace(a[x]);
-            rep(x, j) st.emplace(a[n - 1 - x]);
-            ll now = left + right;
-            while (st.size() && l)
-            {
-                ll x = *(st.begin());
-                if (x >= 0)
-                    break;
-                l--;
-                st.erase(x);
-                now -= x;
-            }
-
-            // printf("%d %d %d: %ld %ld, ", i, j, l, left, right);
-            // cout << now << endl;
-            ans = max(now, ans);
+            j *= 2;
+            now /= 2.0;
         }
+        // cout << fixed << i << " " << now << endl;
+        q += now;
     }
+    q /= n;
+    p += q;
 
-    cout << ans << endl;
+    cout << fixed << p << endl;
 
     return 0;
 }

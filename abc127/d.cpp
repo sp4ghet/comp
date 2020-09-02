@@ -44,55 +44,33 @@ void view(const std::vector<std::vector<T>> &vv)
 
 int main()
 {
-    int n, k;
-    cin >> n >> k;
-    vint a(n);
+    int n, m;
+    cin >> n >> m;
+    map<ll, ll> a;
     rep(i, n)
     {
-        cin >> a[i];
+        int x;
+        cin >> x;
+        a[x]++;
     }
 
-    vll s(n + 1);
-    rep(i, n) s[i + 1] = s[i] + a[i];
+    rep(honya, m)
+    {
+        int b, c;
+        cin >> b >> c;
+        a[c] += b;
+    }
 
     ll ans = 0;
-    rep(i, k + 1)
+    ll c = n;
+    for (auto p = a.rbegin(); p != a.rend(); ++p)
     {
-        if (i > n)
+        pair<ll, ll> q = *p;
+        ans += q.first * min(c, q.second);
+        c -= q.second;
+        if (c <= 0)
             break;
-
-        ll left = s[i];
-
-        rep(j, k - i + 1)
-        {
-            if (i + j > n)
-                break;
-            ll l = k - i - j;
-            if (l < 0)
-                continue;
-
-            ll right = s[n] - s[n - j];
-
-            multiset<ll> st;
-            rep(x, i) st.emplace(a[x]);
-            rep(x, j) st.emplace(a[n - 1 - x]);
-            ll now = left + right;
-            while (st.size() && l)
-            {
-                ll x = *(st.begin());
-                if (x >= 0)
-                    break;
-                l--;
-                st.erase(x);
-                now -= x;
-            }
-
-            // printf("%d %d %d: %ld %ld, ", i, j, l, left, right);
-            // cout << now << endl;
-            ans = max(now, ans);
-        }
     }
-
     cout << ans << endl;
 
     return 0;
