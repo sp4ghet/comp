@@ -2,6 +2,8 @@
 using namespace std;
 using ll = long long;
 using P = pair<int, int>;
+using vll = vector<ll>;
+#define _GLIBCXX_DEBUG
 
 #define rep(i, n) for (int i = 0; i < n; ++i)
 #pragma region Debug
@@ -24,45 +26,97 @@ void view(const std::vector<std::vector<T>> &vv)
 }
 #pragma endregion
 
+const ll INF = INT64_MAX - 5;
+
 int main()
 {
-    int n, k;
+    ll n, k;
     cin >> n >> k;
-    vector<int> pos;
-    vector<int> neg;
+    vll pos, neg, zer;
     rep(i, n)
     {
-        int a;
+        ll a;
         cin >> a;
-        if (a > 0)
+        if (a == 0)
         {
-            pos.push_back(a);
+            zer.emplace_back(a);
+        }
+        else if (a > 0)
+        {
+            pos.emplace_back(a);
         }
         else
         {
-            neg.push_back(a);
+            neg.emplace_back(abs(a));
         }
     }
-    // sort(pos.begin(), pos.end());
-    // sort(neg.begin(), neg.end());
+    sort(pos.begin(), pos.end());
+    sort(neg.begin(), neg.end());
 
-    if (k < neg.size() * pos.size())
-    {
-        vector<int> a(neg.size() * pos.size());
-        // np - k th smallest number
-        int big = 0;
-        rep(i, k)
+    auto cnt = [&](ll x) {
+        ll now = 0;
+        if (x == 0)
         {
-            rep(j, k)
+            now = neg.size() * pos.size();
+            return now;
+        }
+        if (x > 0)
+        {
+
+            rep(i, pos.size())
             {
-            
+                // (a,b]
+                ll fd = (x - 1) / pos[i];
+                int idx = upper_bound(pos.begin(), pos.end(), fd) - pos.begin();
+                if (idx > i)
+                    idx--;
+                now += max(0, idx);
             }
+            rep(i, neg.size())
+            {
+                ll fd = (x - 1) / neg[i];
+                int idx = upper_bound(neg.begin(), neg.end(), fd) - neg.begin();
+                if (idx > i)
+                    idx--;
+                now += max(0, idx);
+            }
+            now /= 2;
+
+            now += neg.size() * pos.size();
+            now += zer.size() * (pos.size() + neg.size());
+            now += (zer.size() * (zer.size() - 1)) / 2;
+
+            return now;
+        }
+        // x < 0
+        x = abs(x);
+        rep(i, pos.size())
+        {
+            ll fd = (x) / pos[i];
+            int idx = upper_bound(neg.begin(), neg.end(), fd) - neg.begin();
+            now += neg.size() - idx;
+        }
+        return now;
+    };
+
+    ll l = -INF, r = INF;
+    while (l < r)
+    {
+        ll mid = (l + r + 1) / 2;
+        ll c = cnt(mid);
+        // printf("%ld %ld: %ld %ld\n", l, r, mid, c);
+        bool ok = c < k;
+        if (ok)
+        {
+            l = mid;
+        }
+        else
+        {
+            r = mid - 1;
         }
     }
-    else
-    {
-        // some positive number
-    }
+
+    printf("%ld\n", l);
 
     return 0;
 }
