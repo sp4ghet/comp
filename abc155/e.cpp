@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
+using vll = vector<ll>;
 using P = pair<int, int>;
 
 #define rep(i, n) for (int i = 0; i < n; ++i)
@@ -45,36 +46,34 @@ inline bool chmax(T &a, T b)
     return false;
 }
 #pragma endregion
-
+using vvll = vector<vll>;
+const ll INF = 1e12;
 int main()
 {
     string s;
     cin >> s;
-    // vector<vector<int>> dp(1000000, vector<int>(2));
-    ll use = 0, chg = 0;
-    int carry = 0;
-    rep(i, s.size())
+    int n = s.size();
+
+    vvll dp(n + 1, vll(2, INF));
+    // pay just the right amount
+    dp[0][0] = 0;
+    // pay one extra
+    dp[0][1] = 1;
+
+    rep(i, n)
     {
-        int k = s.size() - i - 1;
-        int n = s.at(k) - '0';
-        if ((n + carry) == 10)
-        {
-            carry = 1;
-            continue;
-        }
-
-        if ((n + carry) > 5)
-        {
-            chg += 10 - (n + carry);
-            carry = 1;
-        }
-        else
-        {
-            use += n + carry;
-            carry = 0;
-        }
+        int x = s[i] - '0';
+        // if you have no carriage, you need to pay the exact digit
+        chmin(dp[i + 1][0], dp[i][0] + x);
+        // if you want to create carriage, it takes one extra
+        chmin(dp[i + 1][1], dp[i][0] + x + 1);
+        // if you want to use carriage, you can do 10 - digit for free
+        chmin(dp[i + 1][0], dp[i][1] + (10 - x));
+        // if you want to keep carriage going, you can do 10-x and you get 1 less change here, so subtract that.
+        chmin(dp[i + 1][1], dp[i][1] + (10 - x) - 1);
     }
-    cout << (use + chg + carry) << endl;
 
+    // the answer is how much you paid
+    cout << dp[n][0] << endl;
     return 0;
 }

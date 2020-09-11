@@ -111,6 +111,7 @@ int main()
     }
     rep(i, n) g[i][i] = 0;
 
+    // djikstra
     vll d(n, INF);
     priority_queue<P, vp, greater<P>> q;
     q.push(P(0, 0));
