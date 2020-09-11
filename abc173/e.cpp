@@ -40,7 +40,7 @@ void view(const std::vector<std::vector<T>> &vv)
 #pragma endregion
 
 #pragma region mod
-const int p = 1e9 + 7; //10^9 + 7
+const ll p = 1e9 + 7; //10^9 + 7
 struct mint
 {
     ll x;
@@ -132,52 +132,120 @@ struct comb
             return 0;
         return fact[n] * invs[n - k] * invs[k];
     }
-    mint perm(int n, int k)
-    {
-        if (k < 0 || k > n)
-            return 0;
-        return fact[n] * invs[n - k];
-    }
 };
 #pragma endregion
-vector<mint> fac;
 
-mint npr(mint n, mint r)
-{
-    mint x = fac[n.x];
-    x /= fac[(n - r).x];
-    return x;
-}
+using vmint = vector<mint>;
 
 int main()
 {
-    // We want two series of length n consisting of the numbers 1~m satisfying:
-    // 1. a_i != a_j (i != j)
-    // 2. a_i != b_i for all i
-    int n, m;
-    cin >> n >> m;
-    comb ncr(m);
+    int n, k;
+    cin >> n >> k;
+    priority_queue<ll> pos;
+    priority_queue<ll, vll, greater<ll>> neg;
 
-    // The number of series which satisfies condition 1 is given by mPn
-    // Naiively, if we just need 2 series which satisfy condition 1, then the answer would just be (mPn)*(mPn)
-    mint ans = ncr.perm(m, n);
-
-    // However, we need to exclude cases where a_i = b_i for any i
-    mint x = 0;
-
-    // We can confirm that there are (m-1)P(n-1) cases where a_i may be equal to b_i.
-    // We can also confirm that there are (m-2)P(n-2) cases where a_i = b_i AND a_j = b_j.
-    // There are nC2 ways to choose a pair (i,j) from 1~n, so we need to subtract the overlap.
-    // for an overlap of 3, we would need to add the overlap since we will have subtracted too many.
-    // Inductively, we need to keep going until we hit nCn * (m-n)P(n-n) which is just 1.
     rep(i, n)
     {
-        mint y = ncr(n, i + 1) * ncr.perm(m - i - 1, n - i - 1);
-        x += (i % 2) ? mint(0) - y : y;
+        ll a;
+        cin >> a;
+        if (a >= 0)
+            pos.push(a);
+        if (a < 0)
+            neg.push(a);
     }
-    ans *= (ans - x);
+    if (pos.size() && pos.top() == 0 && k % 2)
+    {
+        cout << 0 << endl;
+        return 0;
+    }
 
-    cout << ans << endl;
+    mint ans = 1;
+    if (pos.size() == 0 && k % 2)
+    {
+        while (neg.size() > k)
+            neg.pop();
+
+        rep(i, k)
+        {
+            ans *= neg.top();
+            neg.pop();
+        }
+        cout << (ans.x + p) % p << endl;
+        return 0;
+    }
+
+    int c = 0;
+    while (c < k)
+    {
+        ll px = 0, nx = 0, p1 = 1, p2 = -1, n1 = 1, n2 = -1;
+        bool pok = pos.size() >= 2,
+             nok = neg.size() >= 2;
+        if (k - c == 1)
+        {
+            // printf("end: %d %d %d\n", c, pos.size(), neg.size());
+            if (pos.size())
+                ans *= pos.top();
+            if (pos.size() == 0 && neg.size())
+                ans *= neg.top();
+            break;
+        }
+
+        if (pos.size() == 1 && neg.size() == 1)
+        {
+            ans *= mint(pos.top() * neg.top());
+            break;
+        }
+
+        if (pok)
+        {
+            p1 = pos.top();
+            pos.pop();
+            p2 = pos.top();
+            pos.pop();
+        }
+        if (nok)
+        {
+            n1 = neg.top();
+            neg.pop();
+            n2 = neg.top();
+            neg.pop();
+        }
+
+        px = p1 * p2;
+        nx = n1 * n2;
+        if (px > nx)
+        {
+            ans *= p1;
+            pos.push(p2);
+            if (nok)
+            {
+                neg.push(n1);
+                neg.push(n2);
+            }
+            c++;
+        }
+        else
+        {
+            ans *= nx;
+            if (pok)
+            {
+                pos.push(p1);
+                pos.push(p2);
+            }
+            c += 2;
+        }
+    }
+
+    cout << (ans.x + p) % p << endl;
 
     return 0;
 }
+
+// 7 5
+// -8 -7 -6 5 4 3 2
+
+// 5 3
+// -5 -4 -4 3 3
+
+// 10 10
+// -1000000000 -100000000 -10000000 -1000000 -100000 -10000 -1000 -100 -10 -1
