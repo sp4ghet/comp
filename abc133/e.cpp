@@ -135,27 +135,41 @@ struct comb
 };
 #pragma endregion
 
+vvint g;
 int n, k;
-
-int dfs(int v, int d, vvint &g, int p = -1)
+mint dfs(int v, int d, mint x, int p = -1)
 {
+
+    int dm = min(d + 1, 2);
+    mint ret = x;
+    int i = 0;
+    for (int nv : g[v])
+    {
+        if (nv == p)
+            continue;
+        ret *= dfs(nv, d + 1, k - dm - i, v);
+        i++;
+    }
+    // printf("%d: %d\n", v, ret.x);
+    return ret;
 }
 
 int main()
 {
     cin >> n >> k;
-    vvint g(n, vint());
-    using vmint = vector<mint>;
-
+    g = vvint(n, vint());
     rep(i, n - 1)
     {
-        int a, b;
-        cin >> a >> b;
-        a--;
-        b--;
-        g[a].emplace_back(b);
-        g[b].emplace_back(a);
+        int f, t;
+        cin >> f >> t;
+        f--;
+        t--;
+        g[f].emplace_back(t);
+        g[t].emplace_back(f);
     }
+
+    mint ans = dfs(0, 0, k);
+    cout << ans << endl;
 
     return 0;
 }
