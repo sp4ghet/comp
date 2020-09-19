@@ -1,30 +1,30 @@
 {
-  "configurations": [
-    {
-      "name": "Mac",
-      "includePath": [
-        "${workspaceFolder}/**",
-        "/usr/local/include/**",
-        "/usr/local/Cellar/boost/1.72.0/include/**",
-        "/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/**",
-        "/usr/local/Cellar/gcc/9.3.0_1/lib/gcc/9/gcc/x86_64-apple-darwin19/9.3.0/include/**"
-      ],
-      "defines": [],
-      "macFrameworkPath": [
-        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
-      ],
-      "compilerPath": "/usr/local/bin/g++",
-      "cStandard": "c11",
-      "cppStandard": "c++17",
-      "intelliSenseMode": "gcc-x64",
-      "compilerArgs": [
-        "-std=gnu++1７",
-        "-Wall",
-        "-Wextra",
-        "-DONLINE_JUDGE ",
-        "-O2"
-      ]
-    }
-  ],
-  "version": 4
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/include/**",
+                "/usr/local/Cellar/boost/1.73.0/include/**",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/**",
+                "/usr/local/Cellar/gcc/9.3.0_1/lib/gcc/9/gcc/x86_64-apple-darwin19/9.3.0/include/**"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/local/bin/g++",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64",
+            "compilerArgs": [
+                "-std=gnu++1７",
+                "-Wall",
+                "-Wextra",
+                "-DONLINE_JUDGE ",
+                "-O2"
+            ]
+        }
+    ],
+    "version": 4
 }

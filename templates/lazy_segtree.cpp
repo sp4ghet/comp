@@ -72,7 +72,7 @@ struct LazySegTree
     // 1-indexed
     void set(int i, X x)
     {
-        dat[i] = x + n;
+        dat[i + n] = x;
     }
 
     void build()

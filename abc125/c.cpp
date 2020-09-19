@@ -107,6 +107,32 @@ struct SegTree
 
 int main()
 {
+    int n;
+    cin >> n;
+    auto f = [](int a, int b) { return gcd(a, b); };
+    auto u = [](int a, int b) { return b; };
+    SegTree<int> st(n, f, u, 0);
+    rep(i, n)
+    {
+        int a;
+        cin >> a;
+        st.set(i, a);
+    }
+    st.build();
+
+    int maxi = 0;
+
+    rep(i, n)
+    {
+        int l = st.query(0, i), r = st.query(i + 1, n);
+
+        int now = gcd(l, r);
+        if (now > maxi)
+        {
+            maxi = now;
+        }
+    }
+    cout << maxi << endl;
 
     return 0;
 }
